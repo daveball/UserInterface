@@ -1,25 +1,7 @@
 from tkinter import *
+import os
 
 main_screen = Tk()
-
-
-def main_account_screen():
-    global main_screen  # create a GUI window
-    main_screen.geometry("300x250")  # set the configuration of GUI window
-    main_screen.title("Account Login")  # set the title of GUI window
-    # create a Form label
-    Label(text="Choose Login Or Register", bg="blue", width="300", height="2", font=("Calibri", 13)).pack()
-    Label(text="").pack()
-    # create Login Button
-    # add command = login
-    Button(text="Login", height="2", width="30", command=login).pack()
-    Label(text="").pack()
-    # create a register button
-    Button(text="Register", height="2", width="30", command=register).pack()
-    main_screen.mainloop()  # start the GUI
-
-
-main_account_screen()  # call the main_account_screen() function
 
 
 def register():
@@ -31,6 +13,7 @@ def register():
     global password
     global username_entry
     global password_entry
+    global register_screen
     register_screen = Toplevel(main_screen)
     register_screen.title("Register")
     register_screen.geometry("300x250")
@@ -79,39 +62,35 @@ def register_user():
     file.write(username_info + "\n")
     file.write(password_info)
     file.close()
-
     username_entry.delete(0, END)
     password_entry.delete(0, END)
-
     # set a label for showing success information on screen
-
     Label(register_screen, text="Registration Success", fg="green", font=("calibri", 11)).pack()
 
 
 # define login function
 def login():
+    global login_screen
     login_screen = Toplevel(main_screen)
     login_screen.title("Login")
     login_screen.geometry("300x250")
     Label(login_screen, text="Please enter details below to login").pack()
     Label(login_screen, text="").pack()
-
     global username_verify
     global password_verify
-
     username_verify = StringVar()
     password_verify = StringVar()
-
     Label(login_screen, text="Username * ").pack()
+    global username_login_entry
+    global password_login_entry
     username_login_entry = Entry(login_screen, textvariable=username_verify)
     username_login_entry.pack()
     Label(login_screen, text="").pack()
     Label(login_screen, text="Password * ").pack()
-    password__login_entry = Entry(login_screen, textvariable=password_verify, show='*')
-    password__login_entry.pack()
+    password_login_entry = Entry(login_screen, textvariable=password_verify, show='*')
+    password_login_entry.pack()
     Label(login_screen, text="").pack()
-
-    Button(login_screen, text="Login", width=10, height=1, command=login_verification).pack
+    Button(login_screen, text="Login", width=10, height=1, command=login_verify).pack()
 
 
 def login_verification():
@@ -132,16 +111,12 @@ def login_verify():
 
     # defining verification's conditions
     if username1 in list_of_files:
-        file1 = open(username1, "r")  # open the file in read mode
-
-        # read the file,
-        # as splitlines() actually splits on the newline character,
-        # the newline character is not left hanging at the end of each line. if password1 in verify:
-
+        file1 = open(username1, "r")
         verify = file1.read().splitlines()
-        login_sucess()
+        if password1 in verify:
+            login_sucess()
 
-        else :
+        else:
             password_not_recognised()
 
     else:
@@ -189,3 +164,23 @@ def user_not_found():
 
 def delete_user_not_found_screen():
     user_not_found_screen.destroy()
+
+def main_account_screen():
+    global main_screen  # create a GUI window
+    main_screen.geometry("300x250")  # set the configuration of GUI window
+    main_screen.title("Account Login")  # set the title of GUI window
+    # create a Form label
+    Label(text="Choose Login Or Register", bg="blue", width="300", height="2", font=("Calibri", 13)).pack()
+    Label(text="").pack()
+    # create Login Button
+    # add command = login
+    Button(text="Login", height="2", width="30", command=login).pack()
+    Label(text="").pack()
+    # create a register button
+    Button(text="Register", height="2", width="30", command=register).pack()
+    main_screen.mainloop()  # start the GUI
+
+
+main_account_screen()  # call the main_account_screen() function
+
+
